@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fórum</title>
+    <script>
+        let ws;
+
+        function init() {
+            ws = new WebSocket('ws://localhost:8080/chat');
+            ws.onmessage = function(event) {
+                const chat = document.getElementById('chat');
+                chat.value += event.data + '\n';
+                chat.scrollTop = chat.scrollHeight;
+            };
+        }
+
+        function sendMessage() {
+            const messageInput = document.getElementById('message');
+            const message = messageInput.value;
+            ws.send(message);
+            messageInput.value = '';
+        }
+
+        window.onload = init;
+    </script>
+</head>
+<body>
+<h1>Fórum</h1>
+<textarea id="chat" rows="10" cols="30" readonly></textarea><br>
+<input type="text" id="message" />
+<button onclick="sendMessage()">Enviar</button>
+</body>
+</html>
